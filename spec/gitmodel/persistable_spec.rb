@@ -87,11 +87,26 @@ describe GitModel::Persistable do
 
   describe '#save!' do
     
-    it "calls save and returns the non-false and non-nil result"
+    it "calls save and returns the non-false and non-nil result" do
+      o = TestEntity.new
+      o.should_receive(:save).and_return(o)
+      
+      o.save!.should == o
+    end
 
-    it "calls save and raises an exception if the result is nil"
+    it "calls save and raises an exception if the result is nil" do
+      o = TestEntity.new
+      o.should_receive(:save).and_return(nil)
+
+      expect { o.save! }.to raise_error      
+    end
     
-    it "calls save and raises an exception if the result is false"
+    it "calls save and raises an exception if the result is false" do
+      o = TestEntity.new
+      o.should_receive(:save).and_return(false)
+
+      expect { o.save! }.to raise_error
+    end
 
   end
 
